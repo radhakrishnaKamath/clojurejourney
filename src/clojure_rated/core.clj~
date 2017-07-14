@@ -1,0 +1,35 @@
+(ns clojure-rated.core
+  (:gen-class))
+
+(defn add [a b](+ a b)) 
+
+(defn -main
+  "I don't do a whole lot ... yet."
+  [& args]
+  (println (str "It was the panda" "in the library" "with the dust buster"))
+  )
+
+((fn [m]
+   (map 
+    (fn f [n]
+      (if (zero? n)
+        0
+        (if (= n 1)
+          1                   
+          (let [a (f (dec n))
+                b (f (- n 2))]
+            (+ a b)))))(range 1 (inc m)))
+   )
+ 3)
+
+((fn [arr] (map (fn [arr n]
+                  (if (= (nth arr n) (nth arr (- (count arr) n)))
+                    true
+                    false
+                    )
+                  )arr range (count arr)) )[1 2 3 2 1])
+((fn [arr] (map (fn s [x](if (coll? x)
+                           (do (concat (s (first x)) (if(empty? (rest x)) (rest x)(s (rest x)))
+                                       ))
+                        [x])) arr))'('(1 2) 3 [4 5 6]
+ ))
