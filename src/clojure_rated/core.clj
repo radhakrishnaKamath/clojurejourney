@@ -9,6 +9,7 @@
   (println (str "It was the panda" "in the library" "with the dust buster"))
   )
 
+;fibonacci series
 ((fn [m]
    (map
     (fn f [n]
@@ -22,25 +23,29 @@
    )
  3)
 
-((fn [arr] (map (fn [arr n]
+#_((fn [arr] (map (fn [arr n]
                   (if (= (nth arr n) (nth arr (- (count arr) n)))
                     true
                     false
                     )
                   )arr range (count arr)) )[1 2 3 2 1])
+
+;try to flatten but badly failed
 ((fn [arr] (map (fn s [x](if (coll? x)
                            (do (concat (s (first x)) (if(empty? (rest x)) (rest x)(s (rest x)))
                                        ))
                         [x])) arr))'('(1 2) 3 [4 5 6]
  ))
 
+;try to write another function but again failed
 #_((fn [arr] (reduce (fn [a b] (if (= a b)
                                ()
                                (conj a b))) "" arr ))"Leeeerrrooyy")
 
-
+;making list of strings
 (list (str "a" "A") (str "s" "S") (str "v" "V"))
 
+;trying some functions from
 (def sum #(reduce + %))
 (def avg #(/ (sum %) (count %)))
 (defn stat [no] (map #(% no) [sum avg]))
@@ -55,12 +60,17 @@
 
 (map :a heroes)
 
+;understanding reduce and assoc
+#_ (so we can say assoc is basically used to change the map and insert element in vector at a position (assoc vec index replacement) #_(assoc [1 2 3 4] 0 10) => [10 2 3 4])
+
+
 (reduce (fn [new-map [key val]] (assoc new-map key (inc val))) {} {:mq 30 :m 10})
 
 (assoc (assoc {} :max (inc 30)) :min (inc 10))
 
 
 ;defination of fn
+;so from here i started implementing my own code for buildin functions
 
 (defn demon [arr] (str arr " is back!!!"))
 
@@ -73,26 +83,29 @@
 
 ; my map implemented using recursion
 ;this is done
-(defn my-map [f arr new]
+(defn my-map-helper [f arr new]
   (if (not(empty? arr))
-    (my-map f (rest arr) (conj new (f (first arr))))
+    (my-map-helper f (rest arr) (conj new (f (first arr))))
     new))
 
-(my-map demon ["rated" "r"] [])
+(defn my-map [f arr] (my-map-helper f arr []))
+(my-map-helper demon ["rated" "r"] []
+ )
 
-;map using reduce
-((fn [f arra]
-   (reduce
-    (fn [new arr]
-      (if (not (empty? arr))
+;map using reduce not done
+#_(defn red-map [f arra]
+  (reduce
+   (fn [new arr]
+     (if (not (empty? arr))
                                         ; (list (f (rest arr)) (first arr))
-        (conj new (f (first arr)))(f (rest arr))
+       (conj new (f (first arr)))(f (rest arr))
+       )) [] arra))
 
-        )) [] arra)) demon ["r" "s"])
+#_(red-map demon [1 2 3 4])
 
 ;my-drop done
 (defn my-drop [arr n]
-  (if (zero? n)
+  (if (<= n 0)
     arr
     (my-drop (rest arr) (dec n))
     ))
@@ -101,7 +114,7 @@
 
 ;my-take done
 (defn my-take [new arr n]
-  (if (zero? n)
+  (if (<= n 0)
     new
     (my-take (conj new (first arr)) (rest arr) (dec n))))
 
@@ -188,6 +201,7 @@
    {:month 4 :day 1 :human 3.7 :critter 3.9}
    {:month 4 :day 2 :human 3.7 :critter 3.6}])
 
+(some #(and (> (:critter %) 3) %) food-journal)
 
 (some #(if (> (:critter %) 3) %) food-journal)
 
@@ -298,8 +312,6 @@
 
 (cust-sort (vec {1 2,3 4, 5 6}))
 
-
-
 (vec {1 2, 3 4, 5 6})
 
 (defn my-sort-by [f arr]
@@ -365,3 +377,6 @@
                                              margs))) )
 
 (def mult2)
+
+
+((fn foo [x] (when (> x 0) (conj (foo (dec x)) x))) 5)
