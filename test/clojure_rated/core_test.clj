@@ -110,3 +110,19 @@
 (expect/expect 0 (my-min-helper '(1 2 3 4 0 1)))
 
 (expect/expect 1 (my-min 1 2 3 4 1 2))
+
+(expect/expect {:foo 1} (expect/in {:foo 1 :cat 2}))
+
+(expect/expect :foo (expect/in #{:foo :cat}))
+
+(expect/expect :foo (expect/in [:foo :cat]))
+
+(expect/expect 4 ((comp inc +) 2 1))
+
+;(expect/expect '(* + inc) (my-comp-rev '(inc + *)) )
+
+;(expect/expect 4 ((my-comp-helper '(+ inc)) 2 1))
+
+(expect/expect 4 (my-comp-helper-helper [* inc] 3))
+
+(expect/expect 7 ((my-comp inc + *) 1 2 3))

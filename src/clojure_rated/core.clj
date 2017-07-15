@@ -380,3 +380,34 @@
 
 
 ((fn foo [x] (when (> x 0) (conj (foo (dec x)) x))) 5)
+
+(defn y-e-e [] (if (> (rand) 0.5) "yes" "no"))
+
+(y-e-e)
+
+((comp dec + *) 2 1)
+
+((comp - + *) 3 1)
+
+(+ 1)
+
+
+(defn my-comp-first [& fns] ((first fns) 2))
+
+#_ (let me decide what do i have to do ok lets begin my helper will tell me that i have given it a list and what it has to do is take first of it and apply arguments to it and then wait i am a bit confused but wait there's more where i can use a helper to do my work so i have written but i need to see whether i can do the test)
+
+(defn my-comp-helper-helper [fn arr]
+  (if (empty? fn)
+    arr
+    (recur (rest fn)
+           ((first fn) arr))))
+
+(defn my-comp [& lis]
+  (fn [& args]
+    (let [rev-lis (reverse lis)]
+      (my-comp-helper-helper (rest rev-lis)
+                             (apply (first rev-lis) args)))))
+
+#_(defn my-comp-rev [fns] (apply reverse fns))
+
+#_(defn my-comp [& fns] (my-comp-helper (reverse fns)))
